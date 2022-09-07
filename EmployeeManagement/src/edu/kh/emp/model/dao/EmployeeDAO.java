@@ -54,13 +54,12 @@ public class EmployeeDAO {
 				conn = DriverManager.getConnection(url, user, pw);
 				// 오라클 jdbc 드라이버 객체를 이용하여 DB 접속 방법 생성
 				
-				
-				String sql = "SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, \r\n"
-						+ "	   NVL(DEPT_TITLE, '부서없음') DEPT_TITLE, \r\n"
-						+ "	   JOB_NAME, SALARY\r\n"
-						+ "FROM EMPLOYEE\r\n"
-						+ "LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)\r\n"
-						+ "JOIN JOB USING(JOB_CODE)";
+				String sql="SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, "
+						+ "      NVL(DEPT_TITLE, '부서없음') DEPT_TITLE, "
+						+ "      JOB_NAME, SALARY"
+						+ " FROM EMPLOYEE"
+						+ " LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)"
+						+ " JOIN JOB USING(JOB_CODE)";
 				
 				// Statement 객체 생성
 				stmt = conn.createStatement();
@@ -297,6 +296,77 @@ public class EmployeeDAO {
 				}
 			}
  			return result;
+		}
+
+
+		/**사번이 일치하는 사원 정보 수정 (이메일, 전화번호, 급여) DAO
+		 * @param emp
+		 * @return
+		 */
+		public int updateEmployee(Employee emp) {
+			int result=0;
+			
+			try {
+				Class.forName(driver);
+				conn=DriverManager.getConnection(url,user,pw);
+				conn.setAutoCommit(false);
+				String sql="UPDATE EMPLOYEE SET "
+						+ "EMAIL=?, PHONE=?, SALARY=? "
+						+ "WHERE EMP_ID=?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, emp.getEmail());
+				pstmt.setString(2, emp.getPhone());
+				pstmt.setInt(3, emp.getSalary());
+				pstmt.setInt(4, emp.getEmpId());
+				
+				result=pstmt.executeUpdate();
+				
+				if(result>0) conn.commit();
+				else conn.rollback();
+				
+			} catch (Exception e) {
+				
+			} finally {
+				try {
+					if(pstmt!=null) pstmt.close();
+					if(conn!=null) conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return result;
+		}
+
+
+		/**사번이 일치하는 사원 정보 삭제 DAO
+		 * @param empId
+		 * @return
+		 */
+		public int deleteEmployee(int empId) {
+			int result=0;
+			try {
+				Class.forName(driver);
+				conn=DriverManager.getConnection(url, user, pw);
+				conn.setAutoCommit(false);
+				String sql="DELETE FROM EMPLOYEE WHERE EMP_ID=?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, empId);
+				result=pstmt.executeUpdate();
+				if(result==0) conn.rollback();
+				else conn.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if(pstmt!=null) pstmt.close();
+					if(conn!=null) conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return result;
 		}
 		
 		

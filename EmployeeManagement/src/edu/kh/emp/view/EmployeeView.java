@@ -47,8 +47,8 @@ private Scanner sc = new Scanner(System.in);
 				case 1:  insertEmployee();   break;
 				case 2:  selectAll();  break;
 				case 3:  selectEmpId();   break;
-				case 4:     break;
-				case 5:     break;
+				case 4:  updateEmployee();   break;
+				case 5:  deleteEmployee();   break;
 				case 6:     break;
 				case 7:     break;
 				case 8:     break;
@@ -189,7 +189,7 @@ private Scanner sc = new Scanner(System.in);
 		String deptCode=sc.next();
 		
 		//직급코드(D1~D9)
-		System.out.print("직급코드(D1~D9) : ");
+		System.out.print("직급코드(J1~J9) : ");
 		String jobCode=sc.next();
 		
 		//급여등급(S1~S6)
@@ -222,9 +222,57 @@ private Scanner sc = new Scanner(System.in);
 		}
 	}
 	
+	/**
+	 * 사번이 일치하는 사원 정보 수정 (이메일, 전화번호, 급여)
+	 */
+	public void updateEmployee() {
+		System.out.println("<사번이 일치하는 사원 정보 수정>");
+		int empId=inputEmpId(); //사번 입력
+		System.out.print("이메일 : ");
+		String email=sc.next();
+		System.out.print("전화번호(-제외) : ");
+		String phone=sc.next();
+		System.out.print("급여 : ");
+		int salary=sc.nextInt();
+		
+		//기본생성자로 객체 생성 후 setter를 이용해 초기화
+		Employee emp=new Employee();
+		emp.setEmpId(empId);
+		emp.setEmail(email);
+		emp.setPhone(phone);
+		emp.setSalary(salary);
+		
+		int result = dao.updateEmployee(emp); //UPDATE(DML) -> 반영된 행의 개수 반환(int형)
+		if(result>0) { // DML구문 성공 시
+			System.out.println("사원 정보가 수정되었습니다.");
+		} else { // DML구문 실패 시
+			System.out.println("사번이 일치하는 사원이 존재하지 않습니다.");			
+		}
+	}
 	
-	
-	
+	/**
+	 * 사번이 일치하는 사원 정보 삭제 
+	 */
+	public void deleteEmployee() {
+		System.out.println("<사번이 일치하는 사원 정보 삭제>");
+		int empId=inputEmpId();
+		System.out.print("정말 삭제하시겠습니까? (Y/N) : ");
+		char input=sc.next().toUpperCase().charAt(0); //Y/N 대소문자 구분 없이 입력(모두 대문자로 변환)
+		if(input=='Y') {
+			//삭제를 수행하는 DAO 호출
+			//성공 : "삭제되었습니다." 출력
+			//실패 : "사번이 일치하는 사원이 존재하지 않습니다." 출력
+			int result=dao.deleteEmployee(empId);
+			if(result>0) { // DML구문 성공 시
+				System.out.println("삭제되었습니다.");
+			} else { // DML구문 실패 시
+				System.out.println("사번이 일치하는 사원이 존재하지 않습니다.");			
+			}
+		} else {
+			System.out.println("취소되었습니다.");
+		}
+		
+	}
 	
 }
 
