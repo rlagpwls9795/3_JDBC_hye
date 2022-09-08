@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -477,14 +478,14 @@ public class EmployeeDAO {
 		 * @return
 		 */
 		public Map<String, Integer> selectDeptTotalSalary() {
-			Map<String, Integer> resultMap=new HashMap<>();
+			Map<String, Integer> resultMap=new LinkedHashMap<>();
 			try {
 				Class.forName(driver);
 				conn=DriverManager.getConnection(url,user,pw);
 				String sql="SELECT NVL(DEPT_TITLE, '부서없음') DEPT_TITLE, SUM(SALARY) \"급여 합\" "
 						+ " FROM EMPLOYEE"
 						+ " LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)"
-						+ " GROUP BY DEPT_TITLE";
+						+ " GROUP BY DEPT_TITLE ORDER BY \"급여 합\" DESC";
 				stmt=conn.createStatement();
 				rs=stmt.executeQuery(sql);
 				while(rs.next()) {
@@ -514,7 +515,7 @@ public class EmployeeDAO {
 		 * @return
 		 */
 		public Map<String, Double> selectJobAvgSalary() {
-			Map<String, Double> resultMap=new HashMap<>();
+			Map<String, Double> resultMap=new LinkedHashMap<>();
 			try {
 				Class.forName(driver);
 				conn=DriverManager.getConnection(url,user,pw);
@@ -522,7 +523,7 @@ public class EmployeeDAO {
 						+" FROM EMPLOYEE"
 						+" LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)"
 						+" JOIN JOB USING(JOB_CODE)"
-						+ "GROUP BY JOB_NAME";
+						+ "GROUP BY JOB_NAME ORDER BY \"급여 평균\" DESC";
 				stmt=conn.createStatement();
 				rs=stmt.executeQuery(sql);
 				while(rs.next()) {
