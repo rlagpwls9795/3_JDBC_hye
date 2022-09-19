@@ -46,26 +46,3 @@ public class CreateXMLFile {
 		
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
