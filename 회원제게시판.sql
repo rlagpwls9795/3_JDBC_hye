@@ -70,12 +70,3 @@ WHERE MEMBER_ID='user02'
 AND MEMBER_PW='pass02'
 AND SECESSION_FL='N';
 
-
-
-
-
-
-
-
-
-
