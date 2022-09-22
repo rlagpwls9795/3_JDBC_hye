@@ -3,6 +3,7 @@ package edu.kh.jdbc.main.view;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import edu.kh.jdbc.board.view.BoardView;
 import edu.kh.jdbc.main.model.service.MainService;
 import edu.kh.jdbc.member.view.MemberView;
 import edu.kh.jdbc.member.vo.Member;
@@ -19,6 +20,9 @@ public class MainView {
 
 	//회원 기능 메뉴 객체 생성
 	private MemberView memberView = new MemberView();
+	
+	//게시판 기능 메뉴 객체 생성
+	private BoardView boardView = new BoardView();
 	
 	/**
 	 * 메인 메뉴 출력 메서드
@@ -50,7 +54,7 @@ public class MainView {
 					default: System.out.println("메뉴에 작성된 번호만 입력해주세요.");
 					}
 				} else { // 로그인 O 상태
-					System.out.println("***** 로그인 메뉴 *****");
+					System.out.println("\n***** 로그인 메뉴 *****\n");
 					System.out.println("1. 회원 기능");
 					System.out.println("2. 게시판 기능");
 					System.out.println("0. 로그아웃");
@@ -65,7 +69,9 @@ public class MainView {
 					case 1: 
 						memberView.memberMenu(loginMember); //로그인 정보 memberView에 전달
 						break;
-					case 2: break;
+					case 2: 
+						boardView.boardMenu(); //회원정보가 필요한 경우 static에서 얻어 와 사용할 예정
+						break;
 					case 0: 
 						//로그아웃 == loginMember가 참조하는 객체가 존재하지 않음(==null)
 						//로그인 == loginMember가 참조하는 객체가 존재함
@@ -236,13 +242,14 @@ public class MainView {
 	    *    (게시글 번호, 제목, 내용, 작성자명, 작성일, 조회수, 
 	    *     댓글 목록(작성일 오름차순 )
 	    *     
-	    *     
-	    *     2-1. 게시글 수정 (자신의 게시글만)
-	    *     2-2. 게시글 삭제 (자신의 게시글만)
-	    *     
 	    *     2-3. 댓글 작성
 	    *     2-4. 댓글 수정 (자신의 댓글만)
 	    *     2-5. 댓글 삭제 (자신의 댓글만)
+	    *     
+	    *     //자신이 작성한 글일 때만 메뉴 노출
+	    *     2-1. 게시글 수정
+	    *     2-2. 게시글 삭제
+	    *     
 	    * 
 	    * 3. 게시글 작성(제목, 내용 INSERT) 
 	    *    -> 작성 성공 시 상세 조회 수행
