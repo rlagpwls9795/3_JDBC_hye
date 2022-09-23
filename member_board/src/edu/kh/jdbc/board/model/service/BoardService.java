@@ -50,7 +50,7 @@ public class BoardService {
 			List<Comment> commentList = cDao.selectCommentList(conn,boardNo);
 			
 			//Board 필드의 리스트 타입의 commentList에 저장
-			board.setCommnetList(commentList); 
+			board.setCommentList(commentList); 
 			
 			//3. 조회수 증가 (단, 로그인한 회원과 게시글 작성자가 다를 경우에만)
 			if(memberNo != board.getMemberNo()) {
@@ -75,6 +75,44 @@ public class BoardService {
 		return board;
 	}
 
+
+	/** 게시글 수정 서비스
+	 * @param board
+	 * @return result 
+	 * @throws Exception
+	 */
+	public int updateBoard(Board board) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = dao.updateBoard(conn, board);
+		
+		if(result>0 ) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	/** 게시글 삭제 서비스
+	 * @param boardNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteBoard(int boardNo) throws Exception{
+		
+		Connection conn = getConnection();
+		
+		int result = dao.deleteBoard(conn, boardNo);
+		
+		if(result>0 ) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
 	/** 게시글 작성 서비스
 	 * @param boardTitle
 	 * @param boardContent
@@ -83,7 +121,7 @@ public class BoardService {
 	 * @throws Exception
 	 */
 	public int insertBoard(String boardTitle, String boardContent, int memberNo) throws Exception{
-	
+		
 		Connection conn = getConnection();
 		
 		int result = dao.insertBoard(conn, boardTitle,boardContent,memberNo);
@@ -95,13 +133,6 @@ public class BoardService {
 		
 		return result;
 	}
-
-	public int currentVal() throws Exception{
-		Connection conn = getConnection();
-		
-		
-		
-		return 0;
-	}
-
+	
+	
 }

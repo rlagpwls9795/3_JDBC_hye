@@ -14,7 +14,7 @@ public class Board {
 	private String memberName;
 	private int commentCount;
 	
-	private List<Comment> commnetList; // 댓글 목록
+	private List<Comment> commentList; // 댓글 목록
 	
 	public Board() {
 		// TODO Auto-generated constructor stub
@@ -84,12 +84,12 @@ public class Board {
 		this.commentCount = commentCount;
 	}
 
-	public List<Comment> getCommnetList() {
-		return commnetList;
+	public List<Comment> getCommentList() {
+		return commentList;
 	}
 
-	public void setCommnetList(List<Comment> commnetList) {
-		this.commnetList = commnetList;
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
 	}
 	
 	

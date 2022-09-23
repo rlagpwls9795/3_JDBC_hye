@@ -12,4 +12,22 @@
 	AND BOARD_NO=?
 	ORDER BY COMMENT_NO ASC
 	</entry>
+	
+	<entry key = "insertComment">
+	INSERT INTO "COMMENT" VALUES
+	(SEQ_COMMENT_NO.NEXTVAL, ?, DEFAULT, DEFAULT, ?, ?)
+	</entry>
+	
+	<entry key = "updateComment">
+	UPDATE "COMMENT" SET
+	COMMENT_CONTENT = ?
+	WHERE COMMENT_NO=?
+	</entry>
+	
+	<entry key = "deleteComment">
+	UPDATE "COMMENT" SET
+	DELETE_FL='Y'
+	WHERE COMMENT_NO=?
+	</entry>
+	
 </properties>
