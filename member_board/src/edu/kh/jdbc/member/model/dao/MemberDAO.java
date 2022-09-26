@@ -140,7 +140,7 @@ public class MemberDAO {
 	 * @return result
 	 * @throws Exception
 	 */
-	public int updatePw(Connection conn, String memberPw, int memberNo) throws Exception{
+	public int secession(Connection conn, String memberPw, int memberNo) throws Exception{
 		int result=0;
 		
 		try {

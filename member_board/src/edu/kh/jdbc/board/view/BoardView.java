@@ -43,7 +43,7 @@ public class BoardView {
 				case 1: selectAllBoard(); break; //게시글 목록 조회
 				case 2: selectBoard(); break; //게시글 상세 조회
 				case 3: insertBoard(); break;
-				case 4: break;
+				case 4: searchBoard(); break;
 				case 0: System.out.println("로그인 메뉴로 이동합니다."); break;
 				default : System.out.println("메뉴에 작성된 번호만 입력해주세요.");
 				}
@@ -60,7 +60,7 @@ public class BoardView {
 	/**
 	 * 게시글 목록 조회 메서드
 	 */
-	public void selectAllBoard() {
+	private void selectAllBoard() {
 		System.out.println("\n[게시글 목록 조회]\n");
 		
 		try {
@@ -88,7 +88,7 @@ public class BoardView {
 	/**
 	 * 게시글 상세 조회 메서드
 	 */
-	public void selectBoard() {
+	private void selectBoard() {
 		System.out.println("\n[게시글 상세 조회]\n");
 		
 		try {
@@ -226,7 +226,7 @@ public class BoardView {
 	 * @param bNo 
 	 * @param mNo
 	 */
-	public void insertComment(int bNo, int mNo) {
+	private void insertComment(int bNo, int mNo) {
 		
 		try {
 			
@@ -260,7 +260,7 @@ public class BoardView {
 	 * 내용 입력 메서드
 	 * @return content
 	 */
-	public String inputContent() {
+	private String inputContent() {
 		
 		String content = ""; //빈 문자열
 		
@@ -426,7 +426,7 @@ public class BoardView {
 			
 			System.out.print("정말 삭제하시겠습니까? (Y/N) : ");
 			char input =sc.next().toUpperCase().charAt(0);
-			 
+			
 			if(input=='Y') {
 				int result = bService.deleteBoard(boardNo);
 				
@@ -445,30 +445,109 @@ public class BoardView {
 	
  
 	/**
-	 * 게시글 작성 메서드
+	 * 게시글 등록 메서드
 	 */
-	public void insertBoard() {
+	private void insertBoard() {
 		System.out.println("\n[게시글 작성]\n");
 		
 		try {
 			System.out.print("제목 : ");
 			String boardTitle = sc.nextLine();
-			System.out.print("내용 : ");
-			String boardContent = sc.nextLine();
+			System.out.println("내용 : ");
+			String boardContent = inputContent();
 			System.out.println();
 			
-			int result = bService.insertBoard(boardTitle, boardContent,MainView.loginMember.getMemberNo());
+			//Board 객체에 제목, 내용, 회원 번호 담아서 서비스에 전달
+			Board board = new Board();
+			board.setBoardTitle(boardTitle);
+			board.setBoardContent(boardContent);
+			board.setMemberNo(MainView.loginMember.getMemberNo());
+			int result = bService.insertBoard(board);
+			//0(insert 실패 시) 또는 생성된 게시글 번호
 			
 			if(result>0) {
-				System.out.println("작성이 완료되었습니다.\n");
+				System.out.println("\n[게시글 등록이 완료되었습니다.]\n");
 				
+				Board b = bService.selectBoard(result,MainView.loginMember.getMemberNo());
+				
+				if(b == null) {
+					System.out.println("해당 번호의 게시글이 존재하지 않습니다.");
+				} else {
+					System.out.println("-----------------------------------------------------------");
+					System.out.printf("%d | 제목 : %s\n",b.getBoardNo(),b.getBoardTitle());
+					System.out.println("내용 : "+b.getBoardContent());
+					System.out.println();
+					System.out.printf("작성자 : %s | 작성일 : %s | 조회수 : %d \n",b.getMemberName(),
+							b.getCreateDate(), b.getReadCount());
+					System.out.println("-----------------------------------------------------------");
+					
+					if(!b.getCommentList().isEmpty()) {
+						System.out.println("\n[댓글]");
+						 for(Comment c : b.getCommentList()) {
+			                  System.out.printf("댓글번호: %d   작성자: %s  작성일: %s\n%s\n",
+			                        c.getCommentNo(), c.getMemberName(), c.getCreateDate(), c.getCommentContent());
+			                  System.out.println(" --------------------------------------------------------");
+						 }
+					} else {
+						System.out.println("\n해당 게시글에 댓글이 없습니다.");
+					}
+				
+				}
+				
+				System.out.println();
+				subBoardMenu(board);
 				
 			} else { 
-				System.out.println("작성 실패");
+				System.out.println("\n[게시글 등록 실패]\n");
 			}
 			
 		} catch (Exception e) {
-			System.out.println("\n<<게시글 작성 중 예외 발생>>\n");
+			System.out.println("\n<<게시글 등록 중 예외 발생>>\n");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 게시글 검색
+	 */
+	private void searchBoard() {
+	
+		try {
+			System.out.println("\n[게시글 검색]\n");
+			
+			System.out.println("1) 제목");
+			System.out.println("2) 내용");
+			System.out.println("3) 제목 + 내용");
+			System.out.println("4) 작성자");
+			System.out.print("검색 조건 선택 : ");
+			int condition = sc.nextInt();
+			sc.nextLine();
+			
+			if(condition >= 1 && condition <=4) { //정상 입력 시
+				System.out.print("검색어 입력 : ");
+				String query = sc.nextLine();
+			
+				//검색 서비스 호출 후 결과 반환 받기
+				List<Board> boardList = bService.searchBoard(condition, query);
+				
+				if(boardList.isEmpty()) {
+					System.out.println("\n[검색 결과가 없습니다.]\n");
+				} else {
+					
+					for(Board board : boardList) {
+						System.out.printf(" %d | %s[%d] |  %s  |   %s   | %d\n",
+								board.getBoardNo(), board.getBoardTitle(),board.getCommentCount(),
+								board.getMemberName(),board.getCreateDate(),board.getReadCount());
+					}
+				}
+			
+			} else {
+				System.out.println("\n[1~4 사이의 숫자를 입력해주세요.]\n");
+			}
+			System.out.println();
+			
+		} catch (Exception e) {
+			System.out.println("\n<<게시글 검색 중 예외 발생>>\n");
 			e.printStackTrace();
 		}
 	}
@@ -476,36 +555,6 @@ public class BoardView {
 	
 	
 	
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -77,7 +77,7 @@ public class MemberService {
 		
 		Connection conn = getConnection();
 		
-		int result=dao.updatePw(conn, memberPw, memberNo);
+		int result=dao.secession(conn, memberPw, memberNo);
 		
 		if(result>0) commit(conn);
 		else rollback(conn);
