@@ -12,6 +12,7 @@ public class Member {
 	private String gradeName;
 	private int boardNo;
 	private int postNo;
+	private int postCnt;
 	
 	public Member() {
 		// TODO Auto-generated constructor stub
@@ -103,6 +104,14 @@ public class Member {
 
 	public void setGradeName(String gradeName) {
 		this.gradeName = gradeName;
+	}
+
+	public int getPostCnt() {
+		return postCnt;
+	}
+
+	public void setPostCnt(int postCnt) {
+		this.postCnt = postCnt;
 	}
 	
 	
