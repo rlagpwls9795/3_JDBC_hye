@@ -70,7 +70,7 @@ public class BoardService {
 			
 		}
 			
-		close(conn);
+		close  (conn);
 		
 		return board;
 	}
