@@ -1,11 +1,12 @@
-package main;
+package main.view;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import board.view.BoardView;
+import main.model.service.MainService;
 import member.model.vo.Member;
 import member.view.MemberView;
+import post.view.BoardView;
 
 public class MainView {
 	
@@ -21,7 +22,7 @@ public class MainView {
 		do {
 			try {
 				if(loginMember==null) {
-					System.out.println("\n***** 카페 메인 메뉴 *****\n");
+					System.out.println("\n***** 카페 프로그램 *****\n");
 					System.out.println("1. 로그인");
 					System.out.println("2. 회원 가입");
 					System.out.println("0. 프로그램 종료");
@@ -48,8 +49,8 @@ public class MainView {
 					sc.nextLine();
 					
 					switch(input) {
-					case 1: boardView.boardMenu(loginMember); break;
-					case 2: memberView.memberMenu(loginMember); break;
+					case 1: boardView.boardMenu(); break;
+					case 2: memberView.memberMenu(); break;
 					case 3: 
 						loginMember=null;
 						System.out.println("\n[로그아웃 되었습니다.]\n");

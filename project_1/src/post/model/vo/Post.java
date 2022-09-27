@@ -1,17 +1,38 @@
 package post.model.vo;
 
+import java.util.List;
+
 public class Post {
 	private int postNo;
 	private String postTitle;
 	private String postContent;
 	private String createDate;
 	private int ReadCnt;
-	private String deleteFlag;
 	private int memberNo;
+	private String memberName;
+	private int postLike;
+	
 	private int boardNo;
+	private List<Post> postList;
 	
 	public Post() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public List<Post> getPostList() {
+		return postList;
+	}
+
+	public void setPostList(List<Post> postList) {
+		this.postList = postList;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	
+	public String getMemberName() {
+		return memberName;
 	}
 
 	public int getPostNo() {
@@ -53,13 +74,13 @@ public class Post {
 	public void setReadCnt(int readCnt) {
 		ReadCnt = readCnt;
 	}
-
-	public String getDeleteFlag() {
-		return deleteFlag;
+	
+	public int getPostLike() {
+		return postLike;
 	}
 
-	public void setDeleteFlag(String deleteFlag) {
-		this.deleteFlag = deleteFlag;
+	public void setPostLike(int postLike) {
+		this.postLike = postLike;
 	}
 
 	public int getMemberNo() {

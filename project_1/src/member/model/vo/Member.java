@@ -13,6 +13,7 @@ public class Member {
 	private int boardNo;
 	private int postNo;
 	private int postCnt;
+	private int likeCnt;
 	
 	public Member() {
 		// TODO Auto-generated constructor stub
@@ -112,6 +113,14 @@ public class Member {
 
 	public void setPostCnt(int postCnt) {
 		this.postCnt = postCnt;
+	}
+
+	public int getLikeCnt() {
+		return likeCnt;
+	}
+
+	public void setLikeCnt(int likeCnt) {
+		this.likeCnt = likeCnt;
 	}
 	
 	

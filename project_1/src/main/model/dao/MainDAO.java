@@ -1,4 +1,4 @@
-package main;
+package main.model.dao;
 
 import static common.JDBCTemplate.*;
 
@@ -55,6 +55,8 @@ public class MainDAO {
 				loginMember.setMemberName(rs.getString("MEMBER_NM"));
 				loginMember.setMemberGender(rs.getString("MEMBER_GENDER"));
 				loginMember.setEnrollDate(rs.getString("ENROLL_DATE"));
+				loginMember.setGradeNo(rs.getInt("GRADE_NO"));
+				loginMember.setPostCnt(rs.getInt("POST_CNT"));
 			}
 			
 		} finally {

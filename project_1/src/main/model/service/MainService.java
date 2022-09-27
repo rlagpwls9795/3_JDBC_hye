@@ -1,9 +1,10 @@
-package main;
+package main.model.service;
 
 import static common.JDBCTemplate.*;
 
 import java.sql.Connection;
 
+import main.model.dao.MainDAO;
 import member.model.vo.Member;
 
 public class MainService {

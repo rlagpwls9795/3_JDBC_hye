@@ -1,5 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>post-query.xml file</comment>
+	<comment>post-query.xml file</comment>
+	
+	
+	<entry key="selectAllPost">
+		<![CDATA[
+		SELECT POST_NO, POST_TITLE, MEMBER_NM, POST_LIKE,
+		CASE 
+			WHEN (SYSDATE-CREATE_DT) < 1/24/60  --1분 미만
+			THEN FLOOR((SYSDATE-CREATE_DT)*24*60*60) || '초 전'
+			WHEN (SYSDATE-CREATE_DT) < 1/24 --1시간 미만
+			THEN FLOOR((SYSDATE-CREATE_DT)*24*60) || '분 전'
+			WHEN (SYSDATE-CREATE_DT) < 1 --1일 미만
+			THEN FLOOR((SYSDATE-CREATE_DT)*24) || '시간 전'
+			ELSE TO_CHAR(CREATE_DT, 'YYYY-MM-DD')
+		END CREATE_DT
+		FROM POST
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE BOARD_NO=?
+		AND DELETE_FL='N'
+		ORDER BY POST_NO DESC
+		]]>
+	</entry>
+	
+	<entry key="selectPost">
+		<![CDATA[
+			SELECT POST_NO, POST_TITLE, POST_CONTENT, MEMBER_NM, MEMBER_NO, POST_LIKE, 
+			CASE 
+				WHEN (SYSDATE-CREATE_DT) < 1/24/60  --1분 미만
+				THEN FLOOR((SYSDATE-CREATE_DT)*24*60*60) || '초 전'
+				WHEN (SYSDATE-CREATE_DT) < 1/24 --1시간 미만
+				THEN FLOOR((SYSDATE-CREATE_DT)*24*60) || '분 전'
+				WHEN (SYSDATE-CREATE_DT) < 1 --1일 미만
+				THEN FLOOR((SYSDATE-CREATE_DT)*24) || '시간 전'
+				ELSE TO_CHAR(CREATE_DT, 'YYYY-MM-DD')
+			END CREATE_DT
+			FROM POST
+			JOIN MEMBER USING(MEMBER_NO)
+			WHERE BOARD_NO=?
+			AND POST_NO =?
+			AND DELETE_FL='N'
+			ORDER BY POST_NO DESC
+		]]>
+	</entry>
+	
+	
+	<entry key="updatePost">
+		UPDATE POST SET
+		POST_TITLE=?,
+		POST_CONTENT=?
+		WHERE POST_NO=?
+		AND BOARD_NO=?
+	</entry>
+	
+	<entry key="deletePost">
+		UPDATE POST SET
+		DELETE_FL='Y'
+		WHERE POST_NO=?
+		AND BOARD_NO=?
+	</entry>
+	
+	<entry key="insertPost">
+		INSERT INTO POST
+		VALUES(?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?, DEFAULT)
+	</entry>
+	
+	<entry key="nextPostNo">
+		SELECT S_POST_NO.NEXTVAL FROM DUAL
+	</entry>
+	
+	<entry key="increasePostCnt">
+		UPDATE MEMBER SET
+		POST_CNT=POST_CNT+1
+		WHERE MEMBER_NO=?
+	</entry>
+	
+	<entry key="updateGrade">
+		UPDATE MEMBER SET
+		GRADE_NO = GRADE_NO +10
+		WHERE MEMBER_NO=?
+	</entry>
+	
+	<entry key="searchPost1">
+		SELECT POST_NO, POST_TITLE, MEMBER_NM,  
+			CASE 
+				WHEN (SYSDATE-CREATE_DT) &lt; 1/24/60  --1분 미만
+				THEN FLOOR((SYSDATE-CREATE_DT)*24*60*60) || '초 전'
+				WHEN (SYSDATE-CREATE_DT) &lt; 1/24 --1시간 미만
+				THEN FLOOR((SYSDATE-CREATE_DT)*24*60) || '분 전'
+				WHEN (SYSDATE-CREATE_DT) &lt; 1 --1일 미만
+				THEN FLOOR((SYSDATE-CREATE_DT)*24) || '시간 전'
+				ELSE TO_CHAR(CREATE_DT, 'YYYY-MM-DD')
+			END CREATE_DT
+		FROM POST
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE BOARD_NO=?
+		AND DELETE_FL='N'
+	</entry>
+	
+	<entry key="searchPost2_1">
+		AND POST_TITLE LIKE '%'|| ? || '%'
+	</entry>
+	
+	<entry key="searchPost2_2">
+		AND POST_CONTENT LIKE '%'|| ? || '%'
+	</entry>
+	
+	<entry key="searchPost2_3">
+		AND (POST_TITLE LIKE '%'|| ? || '%' 
+   			OR POST_CONTENT LIKE '%'|| ? || '%')
+	</entry>
+	
+	<entry key="searchPost2_4">
+		AND MEMBER_NM LIKE '%' || ? || '%'
+	</entry>
+	
+	<entry key="searchPost3">
+		ORDER BY POST_NO DESC
+	</entry>
+	
+	
+	<entry key="updatePostLike">
+		UPDATE POST SET
+		POST_LIKE = POST_LIKE+1
+		WHERE BOARD_NO=?
+		AND POST_NO=?
+	</entry>
+	
 </properties>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

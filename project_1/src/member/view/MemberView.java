@@ -4,20 +4,18 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import main.MainView;
+import main.view.MainView;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
 public class MemberView {
 	
 	private Scanner sc = new Scanner(System.in);
-	private Member loginMember = null;
 	private int input=-1;
 	
 	MemberService service= new MemberService();
 	
-	public void memberMenu(Member loginMember) {
-		this.loginMember = loginMember;
+	public void memberMenu() {
 		
 		do {
 			try {
@@ -57,7 +55,7 @@ public class MemberView {
 		System.out.println("\n<<나의 정보 조회>>\n");
 		
 		try {
-			Member member = service.myInfo(loginMember);
+			Member member = service.myInfo(MainView.loginMember);
 			
 			System.out.println("회원 번호 : "+member.getMemberNo());
 			System.out.println("아이디 : "+member.getMemberId());
@@ -70,6 +68,8 @@ public class MemberView {
 			}
 			System.out.println("가입일 : "+member.getEnrollDate());
 			System.out.println("회원 등급 : "+member.getGradeName());
+			System.out.println("게시글 수 : "+member.getPostCnt());
+			System.out.println("총 좋아요 수 : "+member.getLikeCnt());
 			
 			System.out.println();
 		} catch(Exception e) {
@@ -105,7 +105,7 @@ public class MemberView {
 				}
 			}
 			
-			int result = service.updatePw(currentPw, newPw1, loginMember.getMemberNo()); 
+			int result = service.updatePw(currentPw, newPw1, MainView.loginMember.getMemberNo()); 
 										//현재비밀번호,  새비밀번호,  로그인회원번호
 			
 			if(result>0) {
@@ -135,7 +135,7 @@ public class MemberView {
 				char ch=sc.next().toUpperCase().charAt(0);
 				
 				if(ch=='Y') {
-					int result = service.deleteInfo(memberPw, loginMember.getMemberNo());
+					int result = service.deleteInfo(memberPw, MainView.loginMember.getMemberNo());
 					
 					if(result>0) {
 						System.out.println("\n[탈퇴되었습니다.]\n");
@@ -175,6 +175,7 @@ public class MemberView {
 				System.out.println("\n[조회 결과가 없습니다.]\n");
 			} else {
 				System.out.println("번호|  아이디  |  이름  |  성별  | 회원등급 ");
+				System.out.println("------------------------------------");
 				for(Member m : memberList) {
 					System.out.printf(" %d | %2s | %2s |  %2s   | %2s\n", 
 							m.getMemberNo(), m.getMemberId(),

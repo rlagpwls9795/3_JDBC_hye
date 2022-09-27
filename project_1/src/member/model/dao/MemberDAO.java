@@ -44,6 +44,7 @@ public class MemberDAO {
 			String sql = prop.getProperty("myInfo");
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setInt(1, loginMember.getMemberNo());
+			pstmt.setInt(2, loginMember.getMemberNo());
 			
 			rs=pstmt.executeQuery();
 			
@@ -55,7 +56,8 @@ public class MemberDAO {
 				member.setMemberGender(rs.getString("MEMBER_GENDER"));
 				member.setEnrollDate(rs.getString("ENROLL_DATE"));
 				member.setGradeName(rs.getString("GRADE_NM"));
-				
+				member.setPostCnt(rs.getInt("POST_CNT"));
+				member.setLikeCnt(rs.getInt("POST_LIKE"));
 			}
 			
 		} finally {
