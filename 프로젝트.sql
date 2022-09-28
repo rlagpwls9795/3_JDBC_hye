@@ -323,4 +323,32 @@ JOIN GRADE USING(GRADE_NO)
 WHERE MEMBER_NO=3
 AND SECESSION_FL='N'
 
+UPDATE MEMBER SET
+SECESSION_FL='N'
+WHERE MEMBER_NO=1;
+
+SELECT * FROM "MEMBER";
+
+COMMIT;
+
+
+SELECT * FROM "MEMBER";
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
