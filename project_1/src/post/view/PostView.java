@@ -256,7 +256,7 @@ public class PostView {
 					System.out.println("----------------------------------------");
 					System.out.println(post.getPostContent());
 					System.out.println();
-					System.out.printf("작성자 : %s | 작성일 : %s \n",p.getMemberName(),p.getCreateDate());
+					System.out.printf("작성자 : %s | 작성일 : %s | 좋아요 : %s \n",p.getMemberName(),p.getCreateDate(),p.getPostLike());
 					System.out.println("----------------------------------------");
 					System.out.println();
 				}
@@ -316,11 +316,14 @@ public class PostView {
 				if(postList.isEmpty()) {
 					System.out.println("\n[검색 결과가 없습니다.]\n");
 				} else {
+					System.out.println("\n<<검색 결과>>\n");
 					for(Post p : postList) {
 						System.out.printf("%d | %s | %s | %s \n",
 								p.getPostNo(), p.getPostTitle(),
 								p.getMemberName(), p.getCreateDate());
 					}
+					System.out.println("------------------------------");
+					System.out.println("<<검색 완료>>\n");
 				}
 			}
 			
